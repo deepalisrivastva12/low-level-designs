@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleRentalStores {
-    List<Store> stores;
-    List<User> users;
+    private final Map<Integer, Store> stores;
+    private final Map<Integer, User> users;
 
     public VehicleRentalStores() {
         this.stores=new ArrayList<>();
