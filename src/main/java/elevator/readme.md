@@ -14,14 +14,14 @@ This is the kind of problem asked in LLD interviews (design an elevator system),
 
 ```
                  ┌───────────────┐
-Floor buttons →  │ ExternalButton │ → ExternalDispatcher → ElevatorScheduler
-(up/down)        └───────────────┘                              │
+Floor buttons →  │ ExternalButton│ → ExternalDispatcher → ElevatorScheduler
+(up/down)        └───────────────┘                               │
                                                       (Strategy) │
                                                                  ▼
 In-car buttons →  InternalButton → InternalDispatcher   NearestElevatorStrategy
                         │                                       │
                         └──────────────┬────────────────────────┘
-                                        ▼
+                                       ▼
                               ElevatorController (1 per car)
                               ├─ upMinPQ   (min-heap, closest floor above)
                               ├─ downMaxPQ (max-heap, closest floor below)
