@@ -81,58 +81,46 @@ splitwise/
 ```mermaid
 classDiagram
     class User {
-        -String userId
-        -String name
-        -BalanceSheetUser balanceSheetUser
-        +getUserId() String
-        +getName() String
-        +getBalanceSheetUser() BalanceSheetUser
+        -userId
+        -name
+        +getUserId()
+        +getBalanceSheetUser()
     }
 
     class UserController {
-        -List~User~ userList
-        +addUser(User user)
-        +getUser(String userId) User
-        +getAllUsers() List~User~
+        +addUser(User)
+        +getUser(userId)
     }
 
     class Group {
-        -String groupId
-        -String groupName
-        -List~User~ members
-        -List~Expense~ expenseList
-        +addGroupMember(User user)
-        +createExpenseForGroup(String, double, User, ExpenseSplitType, List~Split~)
+        -groupId
+        -members
+        +addGroupMember(User)
+        +createExpenseForGroup()
     }
 
     class GroupController {
-        -List~Group~ groupList
-        +createGroup(String, String, User) Group
-        +getGroupById(String) Group
+        +createGroup()
+        +getGroupById(groupId)
     }
 
     class Expense {
-        -String id
-        -String description
-        -double expenseAmount
-        -User paidBy
-        -ExpenseSplitType type
-        -List~Split~ splits
+        -expenseAmount
+        -paidBy
+        -type
+        -splits
     }
 
     class ExpenseController {
-        +createExpense(String, double, User, ExpenseSplitType, List~Split~) Expense
+        +createExpense()
     }
 
     class Split {
-        -User user
-        -double amountUserOwe
-        -int percentage
-        +forAmount(User, double)$ Split
-        +forPercentage(User, int)$ Split
-        +getUser() User
-        +getAmountUserOwe() double
-        +getPercentage() int
+        -user
+        -amountUserOwe
+        -percentage
+        +forAmount(User, amount)
+        +forPercentage(User, pct)
     }
 
     class ExpenseSplitType {
@@ -144,47 +132,33 @@ classDiagram
 
     class ExpenseSplit {
         <<interface>>
-        +validate(List~Split~, double) boolean
-        +calculateOweAmount(List~Split~, double) void
+        +validate()
+        +calculateOweAmount()
     }
 
-    class EqualExpenseSplit {
-        +validate(List~Split~, double) boolean
-        +calculateOweAmount(List~Split~, double) void
-    }
-
-    class UnEqualExpenseSplit {
-        +validate(List~Split~, double) boolean
-        +calculateOweAmount(List~Split~, double) void
-    }
-
-    class PercentageExpenseSplit {
-        +validate(List~Split~, double) boolean
-        +calculateOweAmount(List~Split~, double) void
-    }
+    class EqualExpenseSplit
+    class UnEqualExpenseSplit
+    class PercentageExpenseSplit
 
     class BalanceSheetUser {
-        -double totalYourExpenses
-        -double totalGetBackMoney
-        -double totalYouOwe
-        -double totalPayment
-        -Map~String, Balance~ balanceSheeetPerUser
+        -totalYourExpenses
+        -totalGetBackMoney
+        -totalYouOwe
+        -totalPayment
+        -balanceSheeetPerUser
     }
 
     class Balance {
-        -double oweAmount
-        -double getBackMoneyAmount
+        -oweAmount
+        -getBackMoneyAmount
     }
 
     class BalanceSheetController {
-        +updateBalanceSheetForUsers(User, List~Split~, double)
-        +showBalanceSheetOfUser(User)
+        +updateBalanceSheetForUsers()
+        +showBalanceSheetOfUser()
     }
 
     class SplitWise {
-        -UserController userController
-        -GroupController groupController
-        -BalanceSheetController balanceSheetController
         +demo()
     }
 
@@ -196,28 +170,27 @@ classDiagram
     SplitWise --> GroupController
     SplitWise --> BalanceSheetController
 
-    GroupController --> Group : manages
-    UserController --> User : manages
+    GroupController --> Group
+    UserController --> User
 
-    Group --> ExpenseController : uses
-    Group --> User : has members
-    Group --> Expense : contains
+    Group --> ExpenseController
+    Group --> User
+    Group --> Expense
 
-    ExpenseController --> ExpenseSplit : delegates to
-    ExpenseController --> Expense : creates
-    ExpenseController --> BalanceSheetController : triggers update
+    ExpenseController --> ExpenseSplit
+    ExpenseController --> Expense
+    ExpenseController --> BalanceSheetController
 
-    Expense --> Split : contains
-    Expense --> User : paidBy
-    Split --> User : owed by
+    Expense --> Split
+    Expense --> User
+    Split --> User
 
-    User --> BalanceSheetUser : owns
-    BalanceSheetUser --> Balance : per counterparty
-
-    BalanceSheetController --> BalanceSheetUser : reads/writes
+    User --> BalanceSheetUser
+    BalanceSheetUser --> Balance
+    BalanceSheetController --> BalanceSheetUser
 ```
 
-> 💡 This diagram renders natively on GitHub — no extra tooling or image export needed.
+> 💡 This diagram renders natively on GitHub — no extra tooling or image export needed. If it still fails to render, refresh the page once (GitHub's Mermaid renderer occasionally needs a reload on first load) or view it on desktop rather than the mobile web view.
 
 ---
 
